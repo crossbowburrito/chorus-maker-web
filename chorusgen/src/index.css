@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* base styles */
+* {
+  margin: 0;
+  font-family: "Quicksand";
+  color: white;
+  background-color: #1a1a1a;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  background-color: #2b2b2b;
+  display: inline-block;
+  padding-bottom: 6px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+
+.content {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+button {
+  color: white;
+  background-color: #2eb82e;
+  border-radius: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  color: white;
+}
+
+.row label {
+  margin-right: 8px;
+}
+
+.lefty {
+  float: left;
+}
+.righty {
+  float: right;
+}
+
+.centering {
+  justify-content: center;
+  align-items: center;
+}
+
+
+@media (max-width: 768px) {
+  .tempoSlider {
+      width: 65%;
+  }
+}
+
+.error {
+  background-color: #e74c3c;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(#1a1a1a, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 500px;
+}
+
+.close-button {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  cursor: pointer;
+}
