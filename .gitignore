@@ -43,3 +43,6 @@ instance/
 *.bak
 *.swp
 *.swo
+
+
+chorusgenvenv/
