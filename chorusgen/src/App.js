@@ -1,6 +1,56 @@
 import axios from 'axios';
 import './index.css';
 import { useState, useEffect } from 'react';
+import 'font-awesome/css/font-awesome.min.css';
+
+
+function Tooltip({ text }) {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const isMobile = window.innerWidth <= 768;
+
+  const handleMouseEnter = () => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
+
+  const handleClick = () => {
+    setShowTooltip(!showTooltip);
+  };
+
+  return (
+    <div
+      style={{ position: 'relative', display: 'inline-block' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+    >
+      <i className="fa fa-info-circle" aria-hidden="true"></i>
+      {showTooltip && (
+        <div
+          style={{
+            position: 'absolute',
+            top: isMobile ? '0' : '100%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '10px',
+            backgroundColor: 'black',
+            color: 'white',
+            borderRadius: '5px',
+            zIndex: 1,
+          }}
+        >
+          {text}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 
 function App() {
 
@@ -77,7 +127,8 @@ const [isKeyRandom, setIsKeyRandom] = useState(false);
 const handleKeyChange = (e) => {
   const newKey = e.target.value;
   setKey(newKey);
-  setResults(prevResults => ({ ...prevResults, key: newKey }));
+  setNsf("");
+  setResults(prevResults => ({ ...prevResults, key: newKey + nsf }));
   setHasChanged(true);
 };
 
@@ -157,6 +208,11 @@ const randomizeTimeSignature = async () => {
   }};
 
 
+
+
+
+
+
 //randomize all
 
 const handleRandomizeAllButtonClick = () => {
@@ -207,7 +263,7 @@ const closeModal = () => {
 
   return (
     <div className="App">
-      <header className="header">
+      <header>
         <div className='header'>
           <h1>Make Music!</h1>
         </div>
@@ -216,79 +272,112 @@ const closeModal = () => {
       {error && <div className="error">{error}</div>}
 
       <div className="content">
-
         <div className="row" id ="tempo">
-          <label className="lefty">
-            Tempo: {tempo}
-          </label>
-          <label className='centering'>
-            40&nbsp;<input type= "range" min="40" max= "200" className="tempoSlider" value={tempo} onChange={(handleTempoChange)} disabled={isTempoRandom}/>&nbsp;200
-          </label>
-          <label className="righty">
-          <input type="checkbox" checked={isTempoRandom} onChange={handleRandomTempoButtonClick} /> Random
-          </label>
+          <div className="lefty">
+            <label>
+              Tempo: {tempo}
+            </label>
+            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+              <i className="fa fa-info-circle" aria-hidden="true"></i>
+            </Tooltip>
+          </div>
+          <div className="centering">
+              <div>40</div>&nbsp;
+              <input type= "range" min="40" max= "200" className="tempoSlider" value={tempo} onChange={(handleTempoChange)} disabled={isTempoRandom}/>
+              &nbsp;<div>200</div>
+          </div>
+          <div className="righty">
+            <label>
+            <input type="checkbox" checked={isTempoRandom} onChange={handleRandomTempoButtonClick} /> Random
+            </label>
+          </div>
         </div>
 
         <div className="row" id="mami">
-          <label className="lefty">
-          <label>
-            <input type="radio"  value="Major" label="Major" onChange={handleMamiChange} disabled={isMamiRandom} name ="mami"/> Major
-          </label>
-          <label>
-            <input type="radio" value="Minor" label="Minor" onChange={handleMamiChange} disabled={isMamiRandom} name ="mami"/> Minor
-          </label>
-          </label>
-          <label className='righty'>
-          <input type="checkbox" checked={isMamiRandom} onChange={handleRandomMamiButtonClick} /> Random
-          </label>
-
-          
+          <div className="lefty">
+            <label>
+              <input type="radio"  value="Major" label="Major" onChange={handleMamiChange} disabled={isMamiRandom} name ="mami"/> Major
+            </label>
+            <label>
+              <input type="radio" value="Minor" label="Minor" onChange={handleMamiChange} disabled={isMamiRandom} name ="mami"/> Minor
+            </label>
+            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+              <i className="fa fa-info-circle" aria-hidden="true"></i>
+            </Tooltip>
+          </div>
+          <div className="centering" />
+          <div className='righty'>
+            <label>
+              <input type="checkbox" checked={isMamiRandom} onChange={handleRandomMamiButtonClick} /> Random
+            </label>
+          </div>
         </div>
 
         <div className="row" id ="key">
-          <label className="lefty">
-            <select value={key} onChange={handleKeyChange} disabled={isKeyRandom} name="letter">
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
-              <option value="G">G</option>
-            </select>
-            <select onChange={handleNsfChange} disabled={isKeyRandom} >
-              <option value=" "> </option>
-              <option value="b">b</option>
-              <option value="#">#</option>
-            </select>
-          </label>
+          <div className="lefty">
+            <label>
+              <select value={key} onChange={handleKeyChange} disabled={isKeyRandom} name="letter">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="G">G</option>
+              </select>
+              <select onChange={handleNsfChange} disabled={isKeyRandom} >
+                <option value=" "> </option>
+                <option value="b">b</option>
+                <option value="#">#</option>
+              </select>
+            </label>
+            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+              <i className="fa fa-info-circle" aria-hidden="true"></i>
+            </Tooltip>
+          </div>
+          <div className="centering" />
+          <div className='righty'>
           <label>
             <input type="checkbox" checked={isKeyRandom} onChange={handleRandomKeyButtonClick} /> Random
           </label>
+          </div>
         </div>
 
         <div className='row' id='timesig'>
-          <label className='lefty'>
-            <select value={timeSignature} onChange={handleTimeSignatureChange} disabled={isTimeSignatureRandom}>
-              <option value="4/4">4/4</option>
-              <option value="3/4">3/4</option>
-              <option value="6/8">6/8</option>
-            </select>
-          </label>
-          <label className='righty'>
-            <input type="checkbox" checked={isTimeSignatureRandom} onChange={handleRandomTimeSignatureButtonClick} /> Random
-          </label>
+          <div className='lefty'>
+            <label>          
+              <select value={timeSignature} onChange={handleTimeSignatureChange} disabled={isTimeSignatureRandom}>
+                <option value="4/4">4/4</option>
+                <option value="3/4">3/4</option>
+                <option value="6/8">6/8</option>
+              </select>
+            </label>
+            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+              <i className="fa fa-info-circle" aria-hidden="true"></i>
+            </Tooltip>
+          </div>
+          <div className="centering" />
+          <div className='righty'>
+            <label>
+              <input type="checkbox" checked={isTimeSignatureRandom} onChange={handleRandomTimeSignatureButtonClick} /> Random
+            </label>
+          </div>
         </div>
 
         <div className="row" id ="buttons">
-          <label className="lefty">
-          {hasChanged && <button onClick={generateResults}>Generate</button>}
-          </label>
-          <label className="righty">
-          <a href="https://forms.gle/o4hrQc3SCUDwnh3Q6" target='.blank' rel='noopener noreferrer'>
-          <button>Report Bug</button></a>
-          <button onClick={handleRandomizeAllButtonClick}>Randomize All</button>
-          </label>
+          <div className="lefty">
+            <label>
+              {hasChanged && <button onClick={generateResults}>Generate</button>}
+            </label>
+          </div>
+          <div className="centering" />
+          <div className="righty">
+            <label>
+              <a href="https://forms.gle/o4hrQc3SCUDwnh3Q6" target='.blank' rel='noopener noreferrer'>
+              <button>Report Bug</button></a>
+              <button onClick={handleRandomizeAllButtonClick}>Randomize All</button>
+            </label>
+          </div>
         </div>
 
         <div className="row" id ="results">
@@ -321,8 +410,8 @@ const closeModal = () => {
               {results.tempo && <p>Tempo: {results.tempo}</p>}
               {results.key && <p>Key: {results.key} {results.mami}</p>}
               {results.chordProgression && <p>Chord Progression: {results.chordProgression.join(" - ")}</p>}
-              {results.timeSignature && <p>Time Signature: {results.timeSignature}</p>}
- &nbsp;
+              {results.timeSignature && <p>Time Signature: {results.timeSignature}</p>}&nbsp;
+ 
               <button className="restart-button" onClick={closeModal}>Close</button>
             </div>
           </div>
