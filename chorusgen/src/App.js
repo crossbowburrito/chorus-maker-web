@@ -2,6 +2,9 @@ import axios from 'axios';
 import './index.css';
 import { useState, useEffect } from 'react';
 import 'font-awesome/css/font-awesome.min.css';
+import bugImage from './images/bug.png';
+import diceImage from './images/dice.png';
+
 
 
 function Tooltip({ text }) {
@@ -147,6 +150,8 @@ const handleRandomKeyButtonClick = () => {
   setHasChanged(true);
 };
 
+
+
 const randomizeKey = async () => {
   try {
       const response = await axios.get('http://localhost:5000/api/random-key');
@@ -167,7 +172,6 @@ const [shouldRandomizeChordProgression, setShouldRandomizeChordProgression] = us
 
 
 const randomizeChordProgression = async () => {
-  console.log("Frontend mami value:", mami);
   try {
       const response = await axios.get(`http://localhost:5000/api/random-chord-progression?mami=${mami}`);
       setChordProgression(response.data.progression);
@@ -183,30 +187,35 @@ const randomizeChordProgression = async () => {
 const [timeSignature, setTimeSignature] = useState("4/4");
 const [isTimeSignatureRandom, setIsTimeSignatureRandom] = useState(false);
 
+
 const handleTimeSignatureChange = (e) => {
   const newTimeSignature = e.target.value;
   setTimeSignature(newTimeSignature);
-  setResults(prevResults => ({ ...prevResults, timeSignature: newTimeSignature }));
+  setResults(prevResults => ({ ...prevResults, timeSignature: newTimeSignature}));
   setHasChanged(true);
-}
+};
+
+
 
 const handleRandomTimeSignatureButtonClick = () => {
   setIsTimeSignatureRandom(prevState => !prevState);
+
+  if (!isTimeSignatureRandom) randomizeTimeSignature();
   setHasChanged(true);
-}
+};
+
+
 
 const randomizeTimeSignature = async () => {
-
   try {
       const response = await axios.get('http://localhost:5000/api/random-time-signature');
       setTimeSignature(response.data.timeSignature);
-      setResults(prevResults => ({ ...prevResults, timeSignature: response.data.timeSignature }));
-  }
-  catch (error) {
+      setResults(prevResults => ({ ...prevResults, timeSignature: response.data.time_signature }));
+  } catch (error) {
       console.error("Error fetching random time signature:", error);
       setError(`Failed to fetch data: ${error.message}`);
-  }};
-
+  }
+};
 
 
 
@@ -223,6 +232,7 @@ const handleRandomizeAllButtonClick = () => {
   randomizeTempo();
   randomizeMami();
   randomizeKey();
+  randomizeTimeSignature();
   setShouldRandomizeChordProgression(true);
   setHasChanged(true);
 }
@@ -249,8 +259,8 @@ const [hasChanged, setHasChanged] = useState(false);
 
 const [showResults, setShowResults] = useState(false);
 
-const generateResults = () => {
-  randomizeChordProgression();
+const generateResults = async () => {
+  await randomizeChordProgression();
   setShowResults(true);
 };
 
@@ -301,7 +311,7 @@ const closeModal = () => {
             <label>
               <input type="radio" value="Minor" label="Minor" onChange={handleMamiChange} disabled={isMamiRandom} name ="mami"/> Minor
             </label>
-            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+            <Tooltip text="This refers to the tonality of the music. Major keys tend to sound bright and cheerful, while minor keys tend to sound darker and sadder.">
               <i className="fa fa-info-circle" aria-hidden="true"></i>
             </Tooltip>
           </div>
@@ -331,7 +341,7 @@ const closeModal = () => {
                 <option value="#">#</option>
               </select>
             </label>
-            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+            <Tooltip text="The key of a piece of music determines the scale that the music is based on. It is denoted by a letter and a modifier (e.g., A# or Bb).">
               <i className="fa fa-info-circle" aria-hidden="true"></i>
             </Tooltip>
           </div>
@@ -349,10 +359,12 @@ const closeModal = () => {
               <select value={timeSignature} onChange={handleTimeSignatureChange} disabled={isTimeSignatureRandom}>
                 <option value="4/4">4/4</option>
                 <option value="3/4">3/4</option>
+                <option value="5/4">5/4</option>
                 <option value="6/8">6/8</option>
+                <option value="7/8">7/8</option>
               </select>
             </label>
-            <Tooltip text="Tempo is the speed of the music. It is measured in beats per minute (BPM).">
+            <Tooltip text="The time signature defines how the beats are grouped in a measure. For example, a 4/4 time signature means there are 4 beats in a measure, and each beat is a quarter note.">
               <i className="fa fa-info-circle" aria-hidden="true"></i>
             </Tooltip>
           </div>
@@ -364,21 +376,54 @@ const closeModal = () => {
           </div>
         </div>
 
-        <div className="row" id ="buttons">
-          <div className="lefty">
-            <label>
-              {hasChanged && <button onClick={generateResults}>Generate</button>}
-            </label>
+
+        <hr/> 
+        <div className='socials-container'>
+        
+          
+
+          <div className='centering2'>
+          Follow my socials!
           </div>
-          <div className="centering" />
-          <div className="righty">
-            <label>
-              <a href="https://forms.gle/o4hrQc3SCUDwnh3Q6" target='.blank' rel='noopener noreferrer'>
-              <button>Report Bug</button></a>
-              <button onClick={handleRandomizeAllButtonClick}>Randomize All</button>
-            </label>
+
+          <div className='centering2'>
+            <i className="fa fa-instagram fa-2x" aria-hidden="true" onClick={() => window.open('https://www.instagram.com/celsiaband')}></i>
+            &nbsp;&nbsp;&nbsp;
+            <i className="fa fa-spotify fa-2x" aria-hidden="true" onClick={() => window.open('https://open.spotify.com/artist/6i6bTH79bnqSciILNX2eqi?si=AMNHHiP-SXyLhfjGtfJtgw')}></i>
+            &nbsp;&nbsp;&nbsp;
+            <i className="fa fa-apple fa-2x" aria-hidden="true" onClick={() => window.open('https://music.apple.com/no/artist/celsia/1675114764')}></i>
+            &nbsp;&nbsp;&nbsp;
+            <i className="fa fa-youtube-play fa-2x" aria-hidden="true" onClick={() => window.open('https://youtube.com/@HighAltarProductions?si=4gDlS4oqjMLwUDFN')}></i>
+            &nbsp;&nbsp;&nbsp;
+            <i className="fa fa-soundcloud fa-2x" aria-hidden="true" onClick={() => window.open('https://soundcloud.com/bird-reaper-537514324')}></i>
+            {/*  <i className="fa fa-window-maximize fa-2x" aria-hidden="true" onClick={() => window.open('https://highaltar.')}></i>*/}
+          </div>
+          <div className='centering2'>
+          High Altar Productions
           </div>
         </div>
+      <footer>
+        <div className="bottom footer">
+          <div className="lefty">
+            <a href="https://forms.gle/o4hrQc3SCUDwnh3Q6" target='.blank' rel='noopener noreferrer'>
+              <button>
+                <img src={bugImage} alt="Report Bug" className='icon' />
+              </button>
+            </a>
+          </div>
+          <div className="centering">
+            {hasChanged && <button onClick={generateResults}>
+              Generate
+            </button>}
+          </div>
+          <div className="righty">
+            <button onClick={handleRandomizeAllButtonClick}>
+              <img src={diceImage} alt="Randomize All" className='icon' />
+            </button>
+          </div>
+        </div>
+      </footer>
+  
 
         <div className="row" id ="results">
           {showResults && results.tempo && <p>Tempo: {results.tempo}</p>}
@@ -410,7 +455,7 @@ const closeModal = () => {
               {results.tempo && <p>Tempo: {results.tempo}</p>}
               {results.key && <p>Key: {results.key} {results.mami}</p>}
               {results.chordProgression && <p>Chord Progression: {results.chordProgression.join(" - ")}</p>}
-              {results.timeSignature && <p>Time Signature: {results.timeSignature}</p>}&nbsp;
+              <p>Time Signature: {results.timeSignature}</p>&nbsp;
  
               <button className="restart-button" onClick={closeModal}>Close</button>
             </div>

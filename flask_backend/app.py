@@ -17,7 +17,6 @@ def random_tempo():
 def random_mami():
     choices = ['Major', 'Minor']
     selected_mami = random.choice(choices)
-    print("Randomly selected mami:", selected_mami)
     return jsonify({"mami": selected_mami})
 
 @app.route('/api/random-key')
@@ -35,7 +34,6 @@ def random_key():
 @app.route('/api/random-chord-progression')
 def random_chord_progression():
     mami = request.args.get('mami')
-    print("Backend received mami value:", mami) 
     major_chord_progressions = [
     ['I', 'IV', 'V', 'IV'],
     ['I', 'V', 'vi', 'IV'],
@@ -66,8 +64,15 @@ def random_chord_progression():
 
 @app.route('/api/random-time-signature')
 
+@app.route('/api/random-time-signature')
 def random_time_signature():
-    return jsonify({"time_signature": random.choice(["3/4", "4/4"])})
+    time_signatures = ["3/4", "4/4", "5/4", "6/8", "7/8"]
+    weights = [10, 85, 1, 3, 1]  # example weights
+    selected_time_signature = random.choices(time_signatures, weights)[0]
+    return jsonify({"time_signature": selected_time_signature})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

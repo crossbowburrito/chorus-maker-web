@@ -48,7 +48,7 @@ button {
   margin-right: 8px;
 }
 
-.lefty, .righty, .centering {
+.lefty, .righty, .centering, .centering2 {
   display: flex;
   align-items: center;
 }
@@ -68,8 +68,13 @@ button {
   justify-content: center;
 }
 
-
-
+.centering2 {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  margin: 20px;
+}
 
 @media (max-width: 768px) {
   .tempoSlider {
@@ -157,4 +162,38 @@ input[type=range]::-moz-range-thumb {
   height: 25px; /* Slider handle height */
   background: #4CAF50; /* Green background */
   cursor: pointer; /* Cursor on hover */
+}
+
+.socials-container {
+  bottom: 65%;
+  text-align: center;
+  padding: 20px;
+  z-index: 999; /* Ensure it's above the footer */
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 60px;
+}
+
+hr {
+  border: '1px solid white';
+  width: '100%';
+  margin-top: 50%;
+}
+
+.icon {
+  width: 35px;
+  height: 35px;
+}
+
+i {
+  cursor: alias;
 }
